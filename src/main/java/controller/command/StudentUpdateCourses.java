@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,12 +16,22 @@ import java.util.List;
  */
 public class StudentUpdateCourses implements Command{
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        List<Integer> mainCourseList = new ArrayList<>();
+        mainCourseList.add(Integer.parseInt(request.getParameter("main_course_1_id")));
+        mainCourseList.add(Integer.parseInt(request.getParameter("main_course_2_id")));
+        mainCourseList.add(Integer.parseInt(request.getParameter("main_course_3_id")));
+        mainCourseList.add(Integer.parseInt(request.getParameter("main_course_4_id")));
+
+        List<Integer> additionalCourseList = new ArrayList<>();
+        additionalCourseList.add(Integer.parseInt(request.getParameter("add_course_1_id")));
+        additionalCourseList.add(Integer.parseInt(request.getParameter("add_course_2_id")));
+        connectToDb(mainCourseList, additionalCourseList);
         return null;
     }
 
     private void connectToDb(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException {
-        int id = 0;
+        int id = 1;
         Connection connect = null;
         PreparedStatement statement = null;
         try {

@@ -11,12 +11,14 @@ import java.util.Map;
 
 public class StudentGetMarks implements Command {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        Map<Course, Integer> marks = connectToDb();
+        request.setAttribute("marks", marks);
+        return Params.STUDENT_MARKS_JSP;
     }
 
     private Map<Course,Integer> connectToDb() throws SQLException {
-        int id = 0;
+        int id = 1;
         Map<Course, Integer> courseMark = new HashMap<>();
         Connection connect = null;
         PreparedStatement statement = null;

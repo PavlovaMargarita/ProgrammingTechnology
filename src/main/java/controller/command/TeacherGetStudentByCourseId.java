@@ -14,8 +14,11 @@ import java.util.List;
  */
 public class TeacherGetStudentByCourseId implements Command {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        int course_id = Integer.parseInt(request.getParameter("course_id"));
+        List<Student> studentList = connectToDb(course_id);
+        request.setAttribute("studentList", studentList);
+        return Params.TEACHER_STUDENT_LIST_JSP;
     }
 
     private List<Student> connectToDb(int courseId) throws SQLException {
