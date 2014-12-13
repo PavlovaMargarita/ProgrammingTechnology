@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDaoImpl implements UserDAO{
-    private final String sql ="SELECT id,role FROM user WHERE username=? and password=?";
     private int id;
     private String role;
 
@@ -24,20 +23,18 @@ public class UserDaoImpl implements UserDAO{
         DatabaseConnection db = new DatabaseConnection();
         db.connectToDb();
         try {
+            String sql = "SELECT id,role FROM user WHERE username=? and password=?";
             PreparedStatement pr = db.getConnect().prepareStatement(sql);
-            pr.setString(1,username);
-            pr.setString(2,password);
+            pr.setString(1, username);
+            pr.setString(2, password);
             ResultSet s =  pr.executeQuery();
             while(s.next()){
                 role=s.getString("role");
                 id=s.getInt("id");
             }
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
-
         db.closeConnection();
     }
-
-
 }
