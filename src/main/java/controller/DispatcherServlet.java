@@ -1,5 +1,6 @@
 package controller;
 
+import controller.command.Authorization;
 import controller.command.Command;
 import controller.command.StudentGetMarks;
 import param.Params;
@@ -20,6 +21,7 @@ public class DispatcherServlet extends HttpServlet {
     public void init(ServletConfig config) {
         commandMap = new HashMap<String, Command>();
         commandMap.put(Params.GET_STUDENT_MARKS, new StudentGetMarks());
+        commandMap.put(Params.AUTHORIZATION,new Authorization());
     }
 
     @Override
