@@ -10,6 +10,12 @@
       <c:when test="${role =='teacher'}">
           This is teacher!
       </c:when>
+      <c:when test="${role =='student'}">
+          This is teacher!
+      </c:when>
+      <c:when test="${role =='admin'}">
+          This is teacher!
+      </c:when>
       <c:otherwise>
           OOO.... not work.
       </c:otherwise>
