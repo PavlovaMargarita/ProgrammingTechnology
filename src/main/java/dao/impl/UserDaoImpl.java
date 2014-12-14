@@ -7,8 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDaoImpl implements UserDAO{
+    private static UserDaoImpl ownInstance = new UserDaoImpl();
     private int id;
     private String role;
+
+    public  static UserDaoImpl getInstance(){
+        return ownInstance;
+    }
 
     public String getRole() {
         return role;

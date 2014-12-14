@@ -1,27 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="menu.jsp"/>
 <html>
   <head>
     <title></title>
   </head>
   <body>
   <h1>Давай приниматься за работу</h1>
-  <c:choose>
-      <c:when test="${role =='teacher'}">
-          This is teacher!
-      </c:when>
-      <c:when test="${role =='student'}">
-          This is teacher!
-      </c:when>
-      <c:when test="${role =='admin'}">
-          This is teacher!
-      </c:when>
-      <c:otherwise>
-          OOO.... not work.
-      </c:otherwise>
-  </c:choose>
-
+  <h2>Здесь потом напишем какие-нибудь приветственные слова</h2>
   ROLE=<c:out value="${role}"/>
   ID=<c:out value="${idUser}"/>
   </body>
 </html>
+

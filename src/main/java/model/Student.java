@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Student extends Course {
+public class Student extends User {
     private Map<Course, Integer> generalCourses;
     private List<Course> additionalCourseList;
 
