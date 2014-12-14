@@ -22,13 +22,15 @@ public class DispatcherServlet extends HttpServlet {
     public void init(ServletConfig config) {
         commandMap = new HashMap<>();
         commandMap.put(Params.STUDENT_GET_MARKS, new StudentGetMarks());
-        commandMap.put(Params.STUDENT_DELETE_COURSE, new StudentDeleteCourse());
         commandMap.put(Params.TEACHER_GET_COURSE, new TeacherGetCourses());
         commandMap.put(Params.TEACHER_GET_STUDENT_BY_COURSE_ID, new TeacherGetStudentByCourseId());
         commandMap.put(Params.STUDENT_GET_COURSES, new StudentGetCourses());
         commandMap.put(Params.STUDENT_EDIT_COURSES, new StudentEditCourses());
         commandMap.put(Params.AUTHORIZATION ,new Authorization());
         commandMap.put(Params.STUDENT_SAVE_COURSE, new StudentSaveCourse());
+        commandMap.put(Params.TEACHER_SPECIFY_COURSE, new TeacherSpecifyCourse());
+        commandMap.put(Params.TEACHER_EDIT_COURSES, new TeacherEditCourses());
+        commandMap.put(Params.TEACHER_SAVE_COURSE, new TeacherSaveCourse());
     }
 
     @Override

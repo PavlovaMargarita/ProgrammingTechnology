@@ -12,9 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Margarita on 09.12.2014.
- */
 public class StudentDaoImpl implements StudentDao{
     private static StudentDaoImpl ourInstance = new StudentDaoImpl();
 
@@ -36,9 +33,20 @@ public class StudentDaoImpl implements StudentDao{
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"),Params.bundle.getString("passwordDB"));
 
+            String getTeacherId = "select student.id from student " +
+                    "where student.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet studentIdSet = statement.executeQuery();
+            studentIdSet.next();
+
+            int studentId = studentIdSet.getInt("student.id");
+
             String selectMarks = "select mark.id, mark.mark, mark.course_catalog_id from mark where mark.student_id = ?";
             statement = connect.prepareStatement(selectMarks);
-            statement.setInt(1, userId);
+            statement.setInt(1, studentId);
             ResultSet resultMark = statement.executeQuery();
             while (resultMark.next()){
                 int mark = resultMark.getInt("mark");
@@ -79,10 +87,21 @@ public class StudentDaoImpl implements StudentDao{
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
+            String getTeacherId = "select student.id from student " +
+                    "where student.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet studentIdSet = statement.executeQuery();
+            studentIdSet.next();
+
+            int studentId = studentIdSet.getInt("student.id");
+
             String selectMarks = "update student set main_course_1_id = NULL, main_course_2_id = NULL, main_course_3_id = NULL, main_course_4_id = NULL," +
                     "add_course_1_id = NULL,add_course_2_id = NULL where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
-            statement.setInt(1, userId);
+            statement.setInt(1, studentId);
             statement.executeUpdate();
 
         } catch (ClassNotFoundException e) {
@@ -108,10 +127,21 @@ public class StudentDaoImpl implements StudentDao{
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
+            String getTeacherId = "select student.id from student " +
+                    "where student.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet studentIdSet = statement.executeQuery();
+            studentIdSet.next();
+
+            int studentId = studentIdSet.getInt("student.id");
+
             String selectMarks = "select student.main_course_1_id,student.main_course_2_id, student.main_course_3_id, student.main_course_4_id," +
                     "student.add_course_1_id, student.add_course_2_id from student where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
-            statement.setInt(1, userId);
+            statement.setInt(1, studentId);
             ResultSet resultMark = statement.executeQuery();
             while (resultMark.next()){
                 int course_id = resultMark.getInt("student.main_course_1_id");
@@ -154,6 +184,16 @@ public class StudentDaoImpl implements StudentDao{
             Class.forName(Params.bundle.getString("urlDriver"));
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+            String getTeacherId = "select student.id from student " +
+                    "where student.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet studentIdSet = statement.executeQuery();
+            studentIdSet.next();
+
+            int studentId = studentIdSet.getInt("student.id");
 
             String selectMarks = "insert into student (main_course_1_id, main_course_2_id, main_course_3_id, main_course_4_id," +
                     "add_course_1_id,add_course_2_id) values (?,?,?,?,?,?) where student.id=?";
@@ -163,7 +203,7 @@ public class StudentDaoImpl implements StudentDao{
                 statement.setInt(i + 1, mainCourseList.get(i));
             for(; i < additionalCourseList.size(); i++)
                 statement.setInt(i + 1, additionalCourseList.get(i - mainCourseList.size()));
-            statement.setInt(i, userId);
+            statement.setInt(i, studentId);
             statement.executeUpdate();
 
         } catch (ClassNotFoundException e) {
@@ -187,6 +227,17 @@ public class StudentDaoImpl implements StudentDao{
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
+            String getTeacherId = "select student.id from student " +
+                    "where student.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet studentIdSet = statement.executeQuery();
+            studentIdSet.next();
+
+            int studentId = studentIdSet.getInt("student.id");
+
             String selectMarks = "update student set main_course_1_id = ?, main_course_2_id = ?, main_course_3_id = ?, main_course_4_id = ?," +
                     "add_course_1_id = ?,add_course_2_id = ? where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
@@ -195,7 +246,7 @@ public class StudentDaoImpl implements StudentDao{
                 statement.setInt(i + 1, mainCourseList.get(i));
             for(; i < additionalCourseList.size() + mainCourseList.size(); i++)
                 statement.setInt(i + 1, additionalCourseList.get(i - mainCourseList.size()));
-            statement.setInt(i+1, userId);
+            statement.setInt(i+1, studentId);
             statement.executeUpdate();
 
         } catch (ClassNotFoundException e) {

@@ -15,7 +15,8 @@ import java.util.List;
 public class TeacherGetCourses implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        List<Course> courseList = TeacherDaoImpl.getInstance().getCourses();
+        int userId = Integer.parseInt(request.getSession(true).getAttribute("idUser").toString());
+        List<Course> courseList = TeacherDaoImpl.getInstance().getCourses(userId);
         request.setAttribute("courseList", courseList);
         return Params.TEACHER_COURSE_LIST_JSP;
     }
