@@ -121,31 +121,31 @@ public class TeacherDaoImpl implements TeacherDao {
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
-            String selectAllCourse = "select * from course_catalog";
+            String selectAllCourseCatalogStr = "select * from course_catalog";
 
-            statement = connect.prepareStatement(selectAllCourse);
+            statement = connect.prepareStatement(selectAllCourseCatalogStr);
 
             ResultSet result = statement.executeQuery();
-            List trainingCourse = new ArrayList();
+            List<Integer> selectAllCourseCatalog = new ArrayList();
             while (result.next()){
-                trainingCourse.add(result.getInt("course_catalog.general_course_catalog_id"));
+                selectAllCourseCatalog.add(result.getInt("course_catalog.general_course_catalog_id"));
             }
 
-            String selectTeacherCourse = "select * from course_catalog " +
-                    "where course_catalog.id not in (?)";
+            String selectAllGeneralCourseCatalogStr = "select * from general_course_catalog";
 
-            statement = connect.prepareStatement(selectTeacherCourse);
-            statement.setArray(1, statement.getConnection().createArrayOf("int", trainingCourse.toArray()));
+            statement = connect.prepareStatement(selectAllGeneralCourseCatalogStr);
 
-            ResultSet freeCourse = statement.executeQuery();
-
-            while (freeCourse.next()){
-                int course_id = freeCourse.getInt("general_course_catalog.id");
-                String title = freeCourse.getString("general_course_catalog.title");
-                Course course = new Course();
-                course.setId(course_id);
-                course.setTitle(title);
-                courseList.add(course);
+            result = statement.executeQuery();
+            List<Course> selectAllGeneralCourseCatalog = new ArrayList<>();
+            while (result.next()){
+                int course_id = result.getInt("general_course_catalog.id");
+                if(!selectAllCourseCatalog.contains(course_id)) {
+                    String title = result.getString("general_course_catalog.title");
+                    Course course = new Course();
+                    course.setId(course_id);
+                    course.setTitle(title);
+                    courseList.add(course);
+                }
             }
 
         } catch (ClassNotFoundException e) {
@@ -162,7 +162,7 @@ public class TeacherDaoImpl implements TeacherDao {
     }
 
     @Override
-    public void deleteCourse(int userID, int courseId) throws SQLException {
+    public void deleteCourse(int userId, int courseId) throws SQLException {
         Connection connect = null;
         PreparedStatement statement = null;
         try {
@@ -170,12 +170,22 @@ public class TeacherDaoImpl implements TeacherDao {
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
+            String getTeacherId = "select teacher.id from teacher " +
+                    "where teacher.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet teacherIdSet = statement.executeQuery();
+            teacherIdSet.next();
+            int teacherId = teacherIdSet.getInt("teacher.id");
+
             String selectMarks = "delete from course_catalog where course_catalog.general_course_catalog_id = ?" +
                     " and course_catalog.teacher_id = ?";
             statement = connect.prepareStatement(selectMarks);
             statement.setInt(1, courseId);
-            statement.setInt(2, userID);
-            statement.executeUpdate();
+            statement.setInt(2, teacherId);
+            statement.execute();
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -208,7 +218,7 @@ public class TeacherDaoImpl implements TeacherDao {
             teacherIdSet.next();
             int teacherId = teacherIdSet.getInt("teacher.id");
 
-            String selectMarks = "insert into course_catalog (general_course_catalog_id, teacher_id " +
+            String selectMarks = "insert into course_catalog (general_course_catalog_id, teacher_id) " +
                     "values (?,?)";
             statement = connect.prepareStatement(selectMarks);
             statement.setInt(1, courseId);
