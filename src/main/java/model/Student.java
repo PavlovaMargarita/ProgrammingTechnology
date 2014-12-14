@@ -1,25 +1,23 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Student extends User {
-    private Map<Course, Integer> generalCourses;
+    private List<Mark> generalCourses;
     private List<Course> additionalCourseList;
 
     public Student(){
         super();
-        generalCourses = new HashMap<>();
+        generalCourses = new ArrayList();
         additionalCourseList = new ArrayList<>();
     }
 
-    public Map<Course, Integer> getGeneralCourses() {
+    public List<Mark> getGeneralCourses() {
         return generalCourses;
     }
 
-    public void setGeneralCourses(Map<Course, Integer> generalCourses) {
+    public void setGeneralCourses(List<Mark> generalCourses) {
         this.generalCourses = generalCourses;
     }
 

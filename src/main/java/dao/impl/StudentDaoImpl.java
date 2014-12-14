@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.StudentDao;
 import model.Course;
+import model.Mark;
 import model.Student;
 import param.Params;
 
@@ -26,8 +27,7 @@ public class StudentDaoImpl implements StudentDao{
 
 
     @Override
-    public Map<Course, Integer> getMarks() throws SQLException {
-        int id = 1;
+    public Map<Course, Integer> getMarks(int userId) throws SQLException {
         Map<Course, Integer> courseMark = new HashMap<>();
         Connection connect = null;
         PreparedStatement statement = null;
@@ -38,7 +38,7 @@ public class StudentDaoImpl implements StudentDao{
 
             String selectMarks = "select mark.id, mark.mark, mark.course_catalog_id from mark where mark.student_id = ?";
             statement = connect.prepareStatement(selectMarks);
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
             ResultSet resultMark = statement.executeQuery();
             while (resultMark.next()){
                 int mark = resultMark.getInt("mark");
@@ -71,8 +71,7 @@ public class StudentDaoImpl implements StudentDao{
     }
 
     @Override
-    public void deleteCourse() throws SQLException {
-        int id = 1;
+    public void deleteCourse(int userId) throws SQLException {
         Connection connect = null;
         PreparedStatement statement = null;
         try {
@@ -83,7 +82,7 @@ public class StudentDaoImpl implements StudentDao{
             String selectMarks = "update student set main_course_1_id = NULL, main_course_2_id = NULL, main_course_3_id = NULL, main_course_4_id = NULL," +
                     "add_course_1_id = NULL,add_course_2_id = NULL where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
             statement.executeUpdate();
 
         } catch (ClassNotFoundException e) {
@@ -99,9 +98,8 @@ public class StudentDaoImpl implements StudentDao{
     }
 
     @Override
-    public Student getCourses() throws SQLException {
-        int id = 1;
-        Map<Course, Integer> mainCourses = new HashMap<>();
+    public Student getCourses(int userId) throws SQLException {
+        List mainCourses = new ArrayList();
         List<Course> addCourses = new ArrayList<>();
         Connection connect = null;
         PreparedStatement statement = null;
@@ -113,17 +111,17 @@ public class StudentDaoImpl implements StudentDao{
             String selectMarks = "select student.main_course_1_id,student.main_course_2_id, student.main_course_3_id, student.main_course_4_id," +
                     "student.add_course_1_id, student.add_course_2_id from student where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
             ResultSet resultMark = statement.executeQuery();
             while (resultMark.next()){
                 int course_id = resultMark.getInt("student.main_course_1_id");
-                mainCourses.put(getCourseById(statement, connect, course_id), null);
+                mainCourses.add(new Mark(getCourseById(statement, connect, course_id), 0));
                 course_id = resultMark.getInt("student.main_course_2_id");
-                mainCourses.put(getCourseById(statement, connect, course_id), null);
+                mainCourses.add(new Mark(getCourseById(statement, connect, course_id), 0));
                 course_id = resultMark.getInt("student.main_course_3_id");
-                mainCourses.put(getCourseById(statement, connect, course_id), null);
+                mainCourses.add(new Mark(getCourseById(statement, connect, course_id), 0));
                 course_id = resultMark.getInt("student.main_course_4_id");
-                mainCourses.put(getCourseById(statement, connect, course_id), null);
+                mainCourses.add(new Mark(getCourseById(statement, connect, course_id), 0));
 
                 course_id = resultMark.getInt("student.add_course_1_id");
                 addCourses.add(getCourseById(statement, connect, course_id));
@@ -148,8 +146,8 @@ public class StudentDaoImpl implements StudentDao{
     }
 
     @Override
-    public void selectCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException {
-        int id = 1;
+    public void selectCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList, int userId) throws SQLException {
+
         Connection connect = null;
         PreparedStatement statement = null;
         try {
@@ -165,7 +163,7 @@ public class StudentDaoImpl implements StudentDao{
                 statement.setInt(i + 1, mainCourseList.get(i));
             for(; i < additionalCourseList.size(); i++)
                 statement.setInt(i + 1, additionalCourseList.get(i - mainCourseList.size()));
-            statement.setInt(i, id);
+            statement.setInt(i, userId);
             statement.executeUpdate();
 
         } catch (ClassNotFoundException e) {
@@ -181,8 +179,7 @@ public class StudentDaoImpl implements StudentDao{
     }
 
     @Override
-    public void updateCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException {
-        int id = 1;
+    public void updateCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList, int userId) throws SQLException {
         Connection connect = null;
         PreparedStatement statement = null;
         try {
@@ -190,15 +187,15 @@ public class StudentDaoImpl implements StudentDao{
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
-            String selectMarks = "update student set (main_course_1_id, main_course_2_id, main_course_3_id, main_course_4_id," +
-                    "add_course_1_id,add_course_2_id) values (?,?,?,?,?,?) where student.id = ?";
+            String selectMarks = "update student set main_course_1_id = ?, main_course_2_id = ?, main_course_3_id = ?, main_course_4_id = ?," +
+                    "add_course_1_id = ?,add_course_2_id = ? where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
             int i = 0;
             for(; i < mainCourseList.size(); i++)
                 statement.setInt(i + 1, mainCourseList.get(i));
-            for(; i < additionalCourseList.size(); i++)
+            for(; i < additionalCourseList.size() + mainCourseList.size(); i++)
                 statement.setInt(i + 1, additionalCourseList.get(i - mainCourseList.size()));
-            statement.setInt(i, id);
+            statement.setInt(i+1, userId);
             statement.executeUpdate();
 
         } catch (ClassNotFoundException e) {

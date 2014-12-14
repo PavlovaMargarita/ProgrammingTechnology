@@ -23,13 +23,12 @@ public class DispatcherServlet extends HttpServlet {
         commandMap = new HashMap<>();
         commandMap.put(Params.STUDENT_GET_MARKS, new StudentGetMarks());
         commandMap.put(Params.STUDENT_DELETE_COURSE, new StudentDeleteCourse());
-        commandMap.put(Params.STUDENT_SELECT_COURSE, new StudentSelectCourses());
-        commandMap.put(Params.STUDENT_UPDATE_COURSE, new StudentUpdateCourses());
         commandMap.put(Params.TEACHER_GET_COURSE, new TeacherGetCourses());
         commandMap.put(Params.TEACHER_GET_STUDENT_BY_COURSE_ID, new TeacherGetStudentByCourseId());
         commandMap.put(Params.STUDENT_GET_COURSES, new StudentGetCourses());
         commandMap.put(Params.STUDENT_EDIT_COURSES, new StudentEditCourses());
-        commandMap.put(Params.AUTHORIZATION,new Authorization());
+        commandMap.put(Params.AUTHORIZATION ,new Authorization());
+        commandMap.put(Params.STUDENT_SAVE_COURSE, new StudentSaveCourse());
     }
 
     @Override

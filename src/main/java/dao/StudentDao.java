@@ -9,10 +9,10 @@ import java.util.Map;
 
 public interface StudentDao {
 
-    public Map<Course, Integer> getMarks() throws SQLException;
-    public void deleteCourse() throws SQLException;
-    public Student getCourses() throws SQLException;
-    public void selectCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException;
-    public void updateCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException;
+    public Map<Course, Integer> getMarks(int userId) throws SQLException;
+    public void deleteCourse(int userId) throws SQLException;
+    public Student getCourses(int userId) throws SQLException;
+    public void selectCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList, int userId) throws SQLException;
+    public void updateCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList, int userId) throws SQLException;
     public List<Course> getAllCourses() throws SQLException;
 }

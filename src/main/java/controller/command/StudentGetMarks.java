@@ -12,7 +12,8 @@ import java.util.Map;
 public class StudentGetMarks implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        Map<Course, Integer> marks = StudentDaoImpl.getInstance().getMarks();
+        int userId = Integer.parseInt(request.getSession(true).getAttribute("idUser").toString());
+        Map<Course, Integer> marks = StudentDaoImpl.getInstance().getMarks(userId);
         request.setAttribute("marks", marks);
         return Params.STUDENT_MARKS_JSP;
     }

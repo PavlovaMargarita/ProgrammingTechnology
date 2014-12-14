@@ -11,7 +11,8 @@ import java.sql.SQLException;
 public class StudentGetCourses implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        Student student = StudentDaoImpl.getInstance().getCourses();
+        int userId = Integer.parseInt(request.getSession(true).getAttribute("idUser").toString());
+        Student student = StudentDaoImpl.getInstance().getCourses(userId);
         request.setAttribute("student", student);
         return Params.STUDENT_COURSE_LIST_JSP;
     }

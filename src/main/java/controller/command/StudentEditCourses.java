@@ -16,10 +16,11 @@ import java.util.List;
 public class StudentEditCourses implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        Student student = StudentDaoImpl.getInstance().getCourses();
-        String param = request.getParameter("param");
+        int userId = Integer.parseInt(request.getSession(true).getAttribute("idUser").toString());
+        Student student = StudentDaoImpl.getInstance().getCourses(userId);
+        String param = request.getParameter("student_course_param");
         request.setAttribute("student", student);
-        request.setAttribute("param", param);
+        request.setAttribute("student_course_param", param);
         List<Course> courseList = StudentDaoImpl.getInstance().getAllCourses();
         request.setAttribute("fullCourseList", courseList);
         return Params.STUDENT_EDIT_COURSE_JSP;

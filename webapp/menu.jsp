@@ -20,37 +20,32 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
-            <ul class="nav navbar-nav">
-
-                    <c:choose>
-                        <c:when test="${role =='teacher'}">
-                           <li class="dropdown">
-                                <a href="" class="dropdown-toggle" data-toggle="dropdown">Преподаватель <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/servlet?method=teacherGetCourse">Список курсов</a></li>
-                                </ul>
-                            </li>
-                        </c:when>
-                        <c:when test="${role =='student'}">
-                            <li class="dropdown">
-                                <a href="" class="dropdown-toggle" data-toggle="dropdown">Студент<span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="/servlet?method=studentGetCourses">Список курсов</a></li>
-                                    <li><a href="/servlet?method=studentGetCourses">Посмотреть оценки</a></li>
-                                </ul>
-                            </li>
-                        </c:when>
-                        <c:when test="${role =='admin'}">
-                            This is teacher!
-                        </c:when>
-                        <c:otherwise>
-                            OOO.... not work.
-                        </c:otherwise>
-                    </c:choose>
-
-
-
-
+            <ul class="nav navbar-nav">           
+                <c:choose>
+                    <c:when test="${role =='teacher'}">
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">Преподаватель <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/servlet?method=teacherGetCourse">Список курсов</a></li>
+                            </ul>
+                        </li>
+                    </c:when>
+                    <c:when test="${role =='student'}">
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">Студент<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/servlet?method=studentGetCourses">Список курсов</a></li>
+                                <li><a href="/servlet?method=studentGetMark">Посмотреть оценки</a></li>
+                            </ul>
+                        </li>
+                    </c:when>
+                    <c:when test="${role =='admin'}">
+                        This is teacher!
+                    </c:when>
+                    <c:otherwise>
+                        OOO.... not work.
+                    </c:otherwise>
+                </c:choose>
 
             </ul>
         </div>
