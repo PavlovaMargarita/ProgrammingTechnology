@@ -111,7 +111,7 @@ public class StudentDaoImpl implements StudentDao{
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
             String selectMarks = "select student.main_course_1_id,student.main_course_2_id, student.main_course_3_id, student.main_course_4_id," +
-                    "student.add_course_1_id, student.add_course_2_id from student where mark.student_id = ?";
+                    "student.add_course_1_id, student.add_course_2_id from student where student.id = ?";
             statement = connect.prepareStatement(selectMarks);
             statement.setInt(1, id);
             ResultSet resultMark = statement.executeQuery();
@@ -210,6 +210,38 @@ public class StudentDaoImpl implements StudentDao{
                 connect.close();
             if(statement != null)
                 statement.close();
+        }
+    }
+
+    @Override
+    public List<Course> getAllCourses() throws SQLException {
+        List<Course> courseList = new ArrayList<>();
+        Connection connect = null;
+        PreparedStatement statement = null;
+        try{
+            Class.forName(Params.bundle.getString("urlDriver"));
+            connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
+                    Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+
+            String selectMarks = "select course_catalog.id, general_course_catalog.title from course_catalog " +
+                    "inner join general_course_catalog on course_catalog.general_course_catalog_id = general_course_catalog.id";
+            statement = connect.prepareStatement(selectMarks);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Course course = new Course();
+                course.setId(resultSet.getInt("course_catalog.id"));
+                course.setTitle(resultSet.getString("general_course_catalog.title"));
+                courseList.add(course);
+            }
+
+        } finally {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+            return courseList;
         }
     }
 

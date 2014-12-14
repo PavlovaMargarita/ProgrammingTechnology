@@ -14,4 +14,5 @@ public interface StudentDao {
     public Student getCourses() throws SQLException;
     public void selectCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException;
     public void updateCourses(List<Integer> mainCourseList, List<Integer> additionalCourseList) throws SQLException;
+    public List<Course> getAllCourses() throws SQLException;
 }

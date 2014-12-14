@@ -1,5 +1,5 @@
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title></title>
@@ -24,15 +24,15 @@
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Студент<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/?method=departmentList">Список курсов</a></li>
-                        <li><a href="/?method=studentGetCourses">Посмотреть оценки</a></li>
+                        <li><a href="/servlet?method=studentGetCourses">Список курсов</a></li>
+                        <li><a href="/servlet?method=studentGetCourses">Посмотреть оценки</a></li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Преподаватель <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/?method=teacherGetCourse">Список курсов</a></li>
+                        <li><a href="/servlet?method=teacherGetCourse">Список курсов</a></li>
                     </ul>
                 </li>
 

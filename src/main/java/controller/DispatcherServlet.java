@@ -26,6 +26,7 @@ public class DispatcherServlet extends HttpServlet {
         commandMap.put(Params.TEACHER_GET_COURSE, new TeacherGetCourses());
         commandMap.put(Params.TEACHER_GET_STUDENT_BY_COURSE_ID, new TeacherGetStudentByCourseId());
         commandMap.put(Params.STUDENT_GET_COURSES, new StudentGetCourses());
+        commandMap.put(Params.STUDENT_EDIT_COURSES, new StudentEditCourses());
     }
 
     @Override
