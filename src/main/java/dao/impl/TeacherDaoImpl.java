@@ -10,9 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Margarita on 09.12.2014.
- */
+
 public class TeacherDaoImpl implements TeacherDao {
     private static TeacherDaoImpl ourInstance = new TeacherDaoImpl();
 
@@ -24,8 +22,8 @@ public class TeacherDaoImpl implements TeacherDao {
     }
 
     @Override
-    public List<Course> getCourses() throws SQLException {
-        int id = 1;
+    public List<Course> getCourses(int userId) throws SQLException {
+
         List<Course> courseList = new ArrayList<>();
         Connection connect = null;
         PreparedStatement statement = null;
@@ -34,12 +32,22 @@ public class TeacherDaoImpl implements TeacherDao {
             connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
                     Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
 
+            String getTeacherId = "select teacher.id from teacher " +
+                    "where teacher.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet teacherIdSet = statement.executeQuery();
+            teacherIdSet.next();
+            int teacherId = teacherIdSet.getInt("teacher.id");
+
             String selectCourse = "select general_course_catalog.title, course_catalog.id from course_catalog " +
                     "inner join general_course_catalog on course_catalog.general_course_catalog_id=general_course_catalog.id " +
                     "where course_catalog.teacher_id = ?";
 
             statement = connect.prepareStatement(selectCourse);
-            statement.setInt(1, id);
+            statement.setInt(1, teacherId);
             ResultSet resultMark = statement.executeQuery();
             while (resultMark.next()){
                 int course_id = resultMark.getInt("course_catalog.id");
@@ -187,5 +195,131 @@ public class TeacherDaoImpl implements TeacherDao {
         }
     }
 
+
+    @Override
+    public List<Course> getFreeCourse() throws SQLException {
+        List<Course> courseList = new ArrayList<>();
+        Connection connect = null;
+        PreparedStatement statement = null;
+        try {
+            Class.forName(Params.bundle.getString("urlDriver"));
+            connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
+                    Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+
+            String selectAllCourseCatalogStr = "select * from course_catalog";
+
+            statement = connect.prepareStatement(selectAllCourseCatalogStr);
+
+            ResultSet result = statement.executeQuery();
+            List<Integer> selectAllCourseCatalog = new ArrayList();
+            while (result.next()){
+                selectAllCourseCatalog.add(result.getInt("course_catalog.general_course_catalog_id"));
+            }
+
+            String selectAllGeneralCourseCatalogStr = "select * from general_course_catalog";
+
+            statement = connect.prepareStatement(selectAllGeneralCourseCatalogStr);
+
+            result = statement.executeQuery();
+            List<Course> selectAllGeneralCourseCatalog = new ArrayList<>();
+            while (result.next()){
+                int course_id = result.getInt("general_course_catalog.id");
+                if(!selectAllCourseCatalog.contains(course_id)) {
+                    String title = result.getString("general_course_catalog.title");
+                    Course course = new Course();
+                    course.setId(course_id);
+                    course.setTitle(title);
+                    courseList.add(course);
+                }
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+            return courseList;
+        }
+    }
+
+    @Override
+    public void deleteCourse(int userId, int courseId) throws SQLException {
+        Connection connect = null;
+        PreparedStatement statement = null;
+        try {
+            Class.forName(Params.bundle.getString("urlDriver"));
+            connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
+                    Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+
+            String getTeacherId = "select teacher.id from teacher " +
+                    "where teacher.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet teacherIdSet = statement.executeQuery();
+            teacherIdSet.next();
+            int teacherId = teacherIdSet.getInt("teacher.id");
+
+            String selectMarks = "delete from course_catalog where course_catalog.general_course_catalog_id = ?" +
+                    " and course_catalog.teacher_id = ?";
+            statement = connect.prepareStatement(selectMarks);
+            statement.setInt(1, courseId);
+            statement.setInt(2, teacherId);
+            statement.execute();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+        }
+    }
+
+    @Override
+    public void addCourse(int userId, int courseId) throws SQLException {
+        Connection connect = null;
+        PreparedStatement statement = null;
+        try {
+            Class.forName(Params.bundle.getString("urlDriver"));
+            connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
+                    Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+
+            String getTeacherId = "select teacher.id from teacher " +
+                    "where teacher.user_id = ?";
+
+            statement = connect.prepareStatement(getTeacherId);
+            statement.setInt(1, userId);
+
+            ResultSet teacherIdSet = statement.executeQuery();
+            teacherIdSet.next();
+            int teacherId = teacherIdSet.getInt("teacher.id");
+
+            String selectMarks = "insert into course_catalog (general_course_catalog_id, teacher_id) " +
+                    "values (?,?)";
+            statement = connect.prepareStatement(selectMarks);
+            statement.setInt(1, courseId);
+            statement.setInt(2, teacherId);
+            statement.executeUpdate();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+        }
+    }
 
 }

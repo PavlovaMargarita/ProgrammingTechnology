@@ -117,9 +117,9 @@
         <form action="${pageContext.request.contextPath}/servlet?method=studentSaveCourse" method="post">
         <input type="hidden" name="student_course_param" value="${student_course_param}">
 
-        Подтвердите удаление:
-        <button type="submit" class="btn btn-primary" style="margin-left: 48%;">Удалить</button>
-        <button type="button" class="btn btn-primary" style="margin-left: 48%;"><a
+<h1>        Подтвердите удаление:</h1>
+        <button type="submit" class="btn btn-primary">Удалить</button>
+        <button type="button" class="btn btn-primary"><a
                 href="/servlet?method=studentGetCourses">Отмена</a></button>
         </form>
     </c:otherwise>

@@ -27,7 +27,11 @@
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">Преподаватель <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/servlet?method=teacherGetCourse">Список курсов</a></li>
+
                                 <li><a href="/servlet?method=teacherSetMarks">Проставить оценки</a></li>
+
+                                <li><a href="/servlet?method=teacherSpecifyCourse">Специфицировать курсы</a></li>
+
                             </ul>
                         </li>
                     </c:when>
