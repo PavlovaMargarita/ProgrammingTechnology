@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.TeacherDao;
 import model.Course;
+import model.Mark;
 import model.Student;
 import param.Params;
 
@@ -100,6 +101,91 @@ public class TeacherDaoImpl implements TeacherDao {
                 statement.close();
             return studentList;
         }
-
     }
+
+    @Override
+    public void saveMarks(List<Student> students,int courseId) throws SQLException {
+        Connection connect = null;
+        PreparedStatement statement = null;
+        try {
+            Class.forName(Params.bundle.getString("urlDriver"));
+            connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
+                    Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+
+            String selectCourse = "update mark set mark= ? where student_id= ? and course_catalog_id=?";
+            statement = connect.prepareStatement(selectCourse);
+            for(Student s:students){
+                for(Mark m:s.getGeneralCourses()){
+                    if(m.getCourse().getId()==courseId){
+                        statement.setInt(1,m.getMark());
+                        statement.setLong(2,s.getId());
+                        statement.setInt(3,courseId);
+                        break;
+
+                    }
+                }
+            }
+            statement.execute();
+
+
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+
+        }
+    }
+
+
+    @Override
+    public List<Student> getStudentsWithMarks(int courseId) throws SQLException {
+        List<Student> studentList = new ArrayList<>();
+        Connection connect = null;
+        PreparedStatement statement = null;
+        try {
+            Class.forName(Params.bundle.getString("urlDriver"));
+            connect = DriverManager.getConnection(Params.bundle.getString("urlDB"),
+                    Params.bundle.getString("userDB"), Params.bundle.getString("passwordDB"));
+
+            String selectCourse = "select p.student_id,u.first_name, u.last_name, u.patronymic,p.mark from user as u inner join (select m.student_id, m.mark, s.user_id from mark as m left join student as s on s.id=m.student_id where m.course_catalog_id = ?) as p on u.id=p.user_id";
+
+            statement = connect.prepareStatement(selectCourse);
+            statement.setInt(1, courseId);
+            ResultSet resultStudent = statement.executeQuery();
+            while (resultStudent.next()){
+                Student student = new Student();
+                student.setId(resultStudent.getInt("p.student_id"));
+                student.setFirstName(resultStudent.getString("u.first_name"));
+                student.setLastName(resultStudent.getString("u.last_name"));
+                student.setPatronymic(resultStudent.getString("u.patronymic"));
+                int m = resultStudent.getInt("p.mark");
+                Course c = new Course();
+                c.setId(courseId);
+                Mark mark = new Mark(c,m);
+                List<Mark> l  =new ArrayList<>();
+                l.add(mark);
+                student.setGeneralCourses(l);
+                studentList.add(student);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+            return studentList;
+        }
+    }
+
+
 }

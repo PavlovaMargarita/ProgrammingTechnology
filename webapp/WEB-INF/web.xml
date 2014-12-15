@@ -18,12 +18,5 @@ http://xmlns.jcp.org/xml/ns/javaee "
         <url-pattern>/servlet</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>DispatcherServlet</servlet-name>
-        <servlet-class>controller.DispatcherServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DispatcherServlet</servlet-name>
-        <url-pattern>/action</url-pattern>
-    </servlet-mapping>
+
 </web-app>

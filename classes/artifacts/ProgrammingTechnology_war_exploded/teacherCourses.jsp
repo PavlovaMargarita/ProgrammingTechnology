@@ -21,8 +21,7 @@
             <td>${element.title}</td>
             <td>
                 <button type="button" class="btn btn-primary"><a
-                        href="/servlet?method=teacherGetStudentByCourseId&course_id=${element.id}">Посмотреть список
-                    студентов</a>
+                        href="/servlet?method=teacherGetStudentListToSetMark&course_id=${element.id}">Проставить оценки</a>
                 </button>
             </td>
         </tr>

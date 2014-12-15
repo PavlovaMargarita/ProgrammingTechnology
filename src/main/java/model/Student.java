@@ -28,4 +28,5 @@ public class Student extends User {
     public void setAdditionalCourseList(List<Course> additionalCourseList) {
         this.additionalCourseList = additionalCourseList;
     }
+
 }

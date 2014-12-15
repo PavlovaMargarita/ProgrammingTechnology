@@ -158,7 +158,7 @@
 
 <div class="container">
 
-    <form class="form-signin" role="form" action="${pageContext.servletContext.contextPath}/action" method="POST">
+    <form class="form-signin" role="form" action="${pageContext.servletContext.contextPath}/servlet" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         <input type="hidden" name="method" value="authorization">
         <label for="inputEmail" class="sr-only">Email address</label>

@@ -27,6 +27,7 @@
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">Преподаватель <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/servlet?method=teacherGetCourse">Список курсов</a></li>
+                                <li><a href="/servlet?method=teacherSetMarks">Проставить оценки</a></li>
                             </ul>
                         </li>
                     </c:when>
@@ -48,6 +49,9 @@
                 </c:choose>
 
             </ul>
+            <button type="button" class="btn btn-primary" style="margin-left: 95%;"><a
+                    href="/servlet?method=logout">Выйти</a></button>
+
         </div>
     </div>
 </nav>

@@ -7,9 +7,9 @@
 </head>
 <body>
 
-<button type="button" class="btn btn-primary"><a href="/servlet?method=studentEditCourses&param=create">Создать</a></button>
-<button type="button" class="btn btn-primary"><a href="/servlet?method=studentEditCourses&param=edit">Изменить</a></button>
-<button type="button" class="btn btn-primary"><a href="/servlet?method=studentEditCourses&param=delete">Удалить</a></button>
+<button type="button" class="btn btn-primary"><a href="/servlet?method=studentEditCourses&student_course_param=create">Создать</a></button>
+<button type="button" class="btn btn-primary"><a href="/servlet?method=studentEditCourses&student_course_param=edit">Изменить</a></button>
+<button type="button" class="btn btn-primary"><a href="/servlet?method=studentEditCourses&student_course_param=delete">Удалить</a></button>
 
 
 <h1> Список основных курсов</h1>
@@ -23,7 +23,7 @@
     <c:forEach var="element" items="${student.generalCourses}">
 
         <tr>
-            <td>${element.key.title}</td>
+            <td>${element.course.title}</td>
         </tr>
     </c:forEach>
 

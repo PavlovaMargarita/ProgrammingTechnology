@@ -29,12 +29,18 @@ public class DispatcherServlet extends HttpServlet {
         commandMap.put(Params.STUDENT_EDIT_COURSES, new StudentEditCourses());
         commandMap.put(Params.AUTHORIZATION ,new Authorization());
         commandMap.put(Params.STUDENT_SAVE_COURSE, new StudentSaveCourse());
+        commandMap.put(Params.STUDENT_SAVE_COURSE, new StudentSaveCourse());
+        commandMap.put(Params.TEACHER_SET_MARKS, new TeacherSetMarks());
+        commandMap.put(Params.TEACHER_LIST_STUDENTS_TO_SET_MARKS, new TeacherListStudentToSetMarks());
+        commandMap.put(Params.TEACHER_SAVE_MARKS,new TeacherSaveMarks());
+        commandMap.put(Params.LOGOUT,new Logout());
     }
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String method = request.getParameter(Params.METHOD);
+        System.out.println(method);
         Command command = commandMap.get(method);
 
         String page = null;

@@ -14,6 +14,7 @@ public class Params {
 
     public static final String LOGIN_NAME = "login";
     public static final String LOGIN_PASSWORD = "password";
+    public static final String LOGOUT="logout";
 
     public static final String STUDENT_GET_MARKS = "studentGetMark";
     public static final String STUDENT_GET_COURSES = "studentGetCourses";
@@ -24,8 +25,11 @@ public class Params {
     public static final String STUDENT_GET_ALL_COURSES = "studentGetAllCourses";
     public static final String TEACHER_GET_COURSE = "teacherGetCourse";
     public static final String TEACHER_GET_STUDENT_BY_COURSE_ID = "teacherGetStudentByCourseId";
+    public static final String TEACHER_SET_MARKS = "teacherSetMarks";
     public static final String STUDENT_SAVE_COURSE = "studentSaveCourse";
     public static final String INDEX_JSP = "index.jsp";
+    public static final String TEACHER_LIST_STUDENTS_TO_SET_MARKS = "teacherGetStudentListToSetMark";
+    public static final String TEACHER_SAVE_MARKS="saveMarks";
 
 
     public static final String STUDENT_COURSE_LIST_JSP = "studentCourseList.jsp";
@@ -34,5 +38,8 @@ public class Params {
 
     public static final String TEACHER_STUDENT_LIST_JSP = "teacherStudentList.jsp";
     public static final String TEACHER_COURSE_LIST_JSP = "teacherCourseList.jsp";
+    public static final String TEACHER_COURSES_JSP = "teacherCourses.jsp";
+    public static final String TEACHER_LIST_STUDENTS_TO_SET_MARKS_JSP = "teacherGetStudentListToSetMark.jsp";
+    public static final String LOGIN_JSP="login.jsp";
 
 }
