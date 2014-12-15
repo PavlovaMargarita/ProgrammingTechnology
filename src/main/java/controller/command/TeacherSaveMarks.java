@@ -26,7 +26,10 @@ public class TeacherSaveMarks implements Command {
             String mark =(String)request.getParameter(Long.toString(s.getId()));
             for(Mark m:s.getGeneralCourses()){
                 if(m.getCourse().getId()==courseId){
-                    m.setMark(Integer.valueOf(mark));
+                    if(mark.isEmpty()){
+                        m.setMark(0);
+                    }else
+                        m.setMark(Integer.valueOf(mark));
                     break;
                 }
             }
